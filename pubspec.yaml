@@ -1,0 +1,45 @@
+name: shiling_fruit
+description: "时令水果 - 按城市、月份、旬段推荐当地最适合吃的水果。离线、开源。"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 数据库
+  drift: ^2.20.0
+  sqlite3_flutter_libs: ^0.5.24
+  path_provider: ^2.1.4
+  path: ^1.9.0
+
+  # 状态管理
+  flutter_riverpod: ^2.5.1
+
+  # 定位与本地推送
+  geolocator: ^13.0.1
+  flutter_local_notifications: ^17.2.2
+  timezone: ^0.9.4
+
+  # 工具
+  intl: ^0.19.0
+  shared_preferences: ^2.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  # Drift 代码生成
+  drift_dev: ^2.20.0
+  build_runner: ^2.4.13
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/data/cities.json
+    - assets/data/fruits.json
+    - assets/data/recommendations.json

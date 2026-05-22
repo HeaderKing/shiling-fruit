@@ -1,0 +1,490 @@
+[
+  {
+    "fruit_id": "yantai_apple",
+    "avg_price": 7.58,
+    "unit": "元/kg",
+    "sample_count": 123,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "luochuan_apple",
+    "avg_price": 7.58,
+    "unit": "元/kg",
+    "sample_count": 123,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "aksu_apple",
+    "avg_price": 7.58,
+    "unit": "元/kg",
+    "sample_count": 123,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "kuerle_pear",
+    "avg_price": 9.47,
+    "unit": "元/kg",
+    "sample_count": 35,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "dangshan_pear",
+    "avg_price": 4.19,
+    "unit": "元/kg",
+    "sample_count": 60,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "laiyang_pear",
+    "avg_price": 6.37,
+    "unit": "元/kg",
+    "sample_count": 395,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "yali_pear",
+    "avg_price": 4.79,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "yulu_pear",
+    "avg_price": 6.9,
+    "unit": "元/kg",
+    "sample_count": 5,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "yantai_cherry",
+    "avg_price": 69.33,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "apricot",
+    "avg_price": 27.27,
+    "unit": "元/kg",
+    "sample_count": 48,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "kumquat",
+    "avg_price": 13.0,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "chouju",
+    "avg_price": 7.07,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "shine_muscat",
+    "avg_price": 31.57,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "kyoho_grape",
+    "avg_price": 27.93,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "muscat_hamburg",
+    "avg_price": 15.73,
+    "unit": "元/kg",
+    "sample_count": 11,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "red_grape",
+    "avg_price": 22.22,
+    "unit": "元/kg",
+    "sample_count": 39,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "blueberry",
+    "avg_price": 36.67,
+    "unit": "元/kg",
+    "sample_count": 60,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "raspberry",
+    "avg_price": 115.0,
+    "unit": "元/kg",
+    "sample_count": 3,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "mulberry",
+    "avg_price": 13.17,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "banana",
+    "avg_price": 9.95,
+    "unit": "元/kg",
+    "sample_count": 123,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "coconut",
+    "avg_price": 7.07,
+    "unit": "元/kg",
+    "sample_count": 33,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "dragon_fruit",
+    "avg_price": 10.66,
+    "unit": "元/kg",
+    "sample_count": 66,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "papaya",
+    "avg_price": 10.67,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "sugar_apple",
+    "avg_price": 34.0,
+    "unit": "元/kg",
+    "sample_count": 3,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "jackfruit",
+    "avg_price": 12.0,
+    "unit": "元/kg",
+    "sample_count": 3,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "hainan_durian",
+    "avg_price": 40.14,
+    "unit": "元/kg",
+    "sample_count": 9,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "mangosteen",
+    "avg_price": 40.07,
+    "unit": "元/kg",
+    "sample_count": 3,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "longan",
+    "avg_price": 25.08,
+    "unit": "元/kg",
+    "sample_count": 6,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "lychee",
+    "avg_price": 26.0,
+    "unit": "元/kg",
+    "sample_count": 26,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "passion_fruit",
+    "avg_price": 17.97,
+    "unit": "元/kg",
+    "sample_count": 33,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "fig",
+    "avg_price": 79.0,
+    "unit": "元/kg",
+    "sample_count": 3,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "xianggua",
+    "avg_price": 8.47,
+    "unit": "元/kg",
+    "sample_count": 60,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "hayward_kiwi",
+    "avg_price": 11.0,
+    "unit": "元/kg",
+    "sample_count": 28,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "hawthorn",
+    "avg_price": 11.43,
+    "unit": "元/kg",
+    "sample_count": 63,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "wogan",
+    "avg_price": 5.8,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "grapefruit",
+    "avg_price": 12.83,
+    "unit": "元/kg",
+    "sample_count": 3,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "blood_orange",
+    "avg_price": 4.6,
+    "unit": "元/kg",
+    "sample_count": 5,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "xiahei_grape",
+    "avg_price": 20.37,
+    "unit": "元/kg",
+    "sample_count": 19,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "green_grape",
+    "avg_price": 23.03,
+    "unit": "元/kg",
+    "sample_count": 32,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "oil_peach",
+    "avg_price": 19.62,
+    "unit": "元/kg",
+    "sample_count": 60,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "flat_peach",
+    "avg_price": 18.47,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "kate_apricot",
+    "avg_price": 19.1,
+    "unit": "元/kg",
+    "sample_count": 20,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "blackberry",
+    "avg_price": 88.0,
+    "unit": "元/kg",
+    "sample_count": 3,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "gooseberry",
+    "avg_price": 35.0,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "watermelon_8424",
+    "avg_price": 4.0,
+    "unit": "元/kg",
+    "sample_count": 2,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "ginseng_fruit",
+    "avg_price": 13.0,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "huangpi",
+    "avg_price": 4.77,
+    "unit": "元/kg",
+    "sample_count": 26,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "avocado",
+    "avg_price": 35.83,
+    "unit": "元/kg",
+    "sample_count": 3,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "cape_gooseberry",
+    "avg_price": 35.0,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "akizuki_pear",
+    "avg_price": 7.97,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "hongxiangsu_pear",
+    "avg_price": 3.88,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "guoguang_apple",
+    "avg_price": 5.6,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "shaguo",
+    "avg_price": 24.76,
+    "unit": "元/kg",
+    "sample_count": 3,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "philippines_banana",
+    "avg_price": 7.56,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "yunnan_strawberry",
+    "avg_price": 22.07,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "yunnan_blueberry",
+    "avg_price": 36.67,
+    "unit": "元/kg",
+    "sample_count": 60,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "hainan_mango",
+    "avg_price": 14.5,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "hainan_pineapple",
+    "avg_price": 7.06,
+    "unit": "元/kg",
+    "sample_count": 66,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "hainan_papaya",
+    "avg_price": 10.67,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "black_jujube",
+    "avg_price": 18.3,
+    "unit": "元/kg",
+    "sample_count": 30,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  },
+  {
+    "fruit_id": "yunnan_grape",
+    "avg_price": 24.26,
+    "unit": "元/kg",
+    "sample_count": 155,
+    "source": "xinfadi.com.cn",
+    "updated_at": "2026-05-22"
+  }
+]

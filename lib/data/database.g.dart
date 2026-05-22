@@ -490,6 +490,16 @@ class $FruitsTable extends Fruits with TableInfo<$FruitsTable, Fruit> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _emojiMeta = const VerificationMeta('emoji');
+  @override
+  late final GeneratedColumn<String> emoji = GeneratedColumn<String>(
+    'emoji',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
   static const VerificationMeta _imageMeta = const VerificationMeta('image');
   @override
   late final GeneratedColumn<String> image = GeneratedColumn<String>(
@@ -635,6 +645,7 @@ class $FruitsTable extends Fruits with TableInfo<$FruitsTable, Fruit> {
     id,
     name,
     englishName,
+    emoji,
     image,
     colorHex,
     brixMin,
@@ -684,6 +695,12 @@ class $FruitsTable extends Fruits with TableInfo<$FruitsTable, Fruit> {
       );
     } else if (isInserting) {
       context.missing(_englishNameMeta);
+    }
+    if (data.containsKey('emoji')) {
+      context.handle(
+        _emojiMeta,
+        emoji.isAcceptableOrUnknown(data['emoji']!, _emojiMeta),
+      );
     }
     if (data.containsKey('image')) {
       context.handle(
@@ -828,6 +845,10 @@ class $FruitsTable extends Fruits with TableInfo<$FruitsTable, Fruit> {
         DriftSqlType.string,
         data['${effectivePrefix}english_name'],
       )!,
+      emoji: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}emoji'],
+      )!,
       image: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}image'],
@@ -893,6 +914,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
   final String id;
   final String name;
   final String englishName;
+  final String emoji;
   final String image;
   final String colorHex;
   final double brixMin;
@@ -910,6 +932,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     required this.id,
     required this.name,
     required this.englishName,
+    required this.emoji,
     required this.image,
     required this.colorHex,
     required this.brixMin,
@@ -930,6 +953,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
     map['english_name'] = Variable<String>(englishName);
+    map['emoji'] = Variable<String>(emoji);
     map['image'] = Variable<String>(image);
     map['color_hex'] = Variable<String>(colorHex);
     map['brix_min'] = Variable<double>(brixMin);
@@ -951,6 +975,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
       id: Value(id),
       name: Value(name),
       englishName: Value(englishName),
+      emoji: Value(emoji),
       image: Value(image),
       colorHex: Value(colorHex),
       brixMin: Value(brixMin),
@@ -976,6 +1001,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       englishName: serializer.fromJson<String>(json['englishName']),
+      emoji: serializer.fromJson<String>(json['emoji']),
       image: serializer.fromJson<String>(json['image']),
       colorHex: serializer.fromJson<String>(json['colorHex']),
       brixMin: serializer.fromJson<double>(json['brixMin']),
@@ -1000,6 +1026,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
       'englishName': serializer.toJson<String>(englishName),
+      'emoji': serializer.toJson<String>(emoji),
       'image': serializer.toJson<String>(image),
       'colorHex': serializer.toJson<String>(colorHex),
       'brixMin': serializer.toJson<double>(brixMin),
@@ -1020,6 +1047,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     String? id,
     String? name,
     String? englishName,
+    String? emoji,
     String? image,
     String? colorHex,
     double? brixMin,
@@ -1037,6 +1065,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     id: id ?? this.id,
     name: name ?? this.name,
     englishName: englishName ?? this.englishName,
+    emoji: emoji ?? this.emoji,
     image: image ?? this.image,
     colorHex: colorHex ?? this.colorHex,
     brixMin: brixMin ?? this.brixMin,
@@ -1058,6 +1087,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
       englishName: data.englishName.present
           ? data.englishName.value
           : this.englishName,
+      emoji: data.emoji.present ? data.emoji.value : this.emoji,
       image: data.image.present ? data.image.value : this.image,
       colorHex: data.colorHex.present ? data.colorHex.value : this.colorHex,
       brixMin: data.brixMin.present ? data.brixMin.value : this.brixMin,
@@ -1094,6 +1124,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('englishName: $englishName, ')
+          ..write('emoji: $emoji, ')
           ..write('image: $image, ')
           ..write('colorHex: $colorHex, ')
           ..write('brixMin: $brixMin, ')
@@ -1116,6 +1147,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     id,
     name,
     englishName,
+    emoji,
     image,
     colorHex,
     brixMin,
@@ -1137,6 +1169,7 @@ class Fruit extends DataClass implements Insertable<Fruit> {
           other.id == this.id &&
           other.name == this.name &&
           other.englishName == this.englishName &&
+          other.emoji == this.emoji &&
           other.image == this.image &&
           other.colorHex == this.colorHex &&
           other.brixMin == this.brixMin &&
@@ -1156,6 +1189,7 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
   final Value<String> id;
   final Value<String> name;
   final Value<String> englishName;
+  final Value<String> emoji;
   final Value<String> image;
   final Value<String> colorHex;
   final Value<double> brixMin;
@@ -1174,6 +1208,7 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.englishName = const Value.absent(),
+    this.emoji = const Value.absent(),
     this.image = const Value.absent(),
     this.colorHex = const Value.absent(),
     this.brixMin = const Value.absent(),
@@ -1193,6 +1228,7 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     required String id,
     required String name,
     required String englishName,
+    this.emoji = const Value.absent(),
     required String image,
     required String colorHex,
     required double brixMin,
@@ -1227,6 +1263,7 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     Expression<String>? id,
     Expression<String>? name,
     Expression<String>? englishName,
+    Expression<String>? emoji,
     Expression<String>? image,
     Expression<String>? colorHex,
     Expression<double>? brixMin,
@@ -1246,6 +1283,7 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (englishName != null) 'english_name': englishName,
+      if (emoji != null) 'emoji': emoji,
       if (image != null) 'image': image,
       if (colorHex != null) 'color_hex': colorHex,
       if (brixMin != null) 'brix_min': brixMin,
@@ -1269,6 +1307,7 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     Value<String>? id,
     Value<String>? name,
     Value<String>? englishName,
+    Value<String>? emoji,
     Value<String>? image,
     Value<String>? colorHex,
     Value<double>? brixMin,
@@ -1288,6 +1327,7 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
       id: id ?? this.id,
       name: name ?? this.name,
       englishName: englishName ?? this.englishName,
+      emoji: emoji ?? this.emoji,
       image: image ?? this.image,
       colorHex: colorHex ?? this.colorHex,
       brixMin: brixMin ?? this.brixMin,
@@ -1317,6 +1357,9 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     }
     if (englishName.present) {
       map['english_name'] = Variable<String>(englishName.value);
+    }
+    if (emoji.present) {
+      map['emoji'] = Variable<String>(emoji.value);
     }
     if (image.present) {
       map['image'] = Variable<String>(image.value);
@@ -1371,6 +1414,7 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('englishName: $englishName, ')
+          ..write('emoji: $emoji, ')
           ..write('image: $image, ')
           ..write('colorHex: $colorHex, ')
           ..write('brixMin: $brixMin, ')
@@ -2294,6 +2338,413 @@ class UserPrefsCompanion extends UpdateCompanion<UserPref> {
   }
 }
 
+class $PricesTable extends Prices with TableInfo<$PricesTable, Price> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PricesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _fruitIdMeta = const VerificationMeta(
+    'fruitId',
+  );
+  @override
+  late final GeneratedColumn<String> fruitId = GeneratedColumn<String>(
+    'fruit_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _avgPriceMeta = const VerificationMeta(
+    'avgPrice',
+  );
+  @override
+  late final GeneratedColumn<double> avgPrice = GeneratedColumn<double>(
+    'avg_price',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _unitMeta = const VerificationMeta('unit');
+  @override
+  late final GeneratedColumn<String> unit = GeneratedColumn<String>(
+    'unit',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('元/kg'),
+  );
+  static const VerificationMeta _sampleCountMeta = const VerificationMeta(
+    'sampleCount',
+  );
+  @override
+  late final GeneratedColumn<int> sampleCount = GeneratedColumn<int>(
+    'sample_count',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<String> source = GeneratedColumn<String>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    fruitId,
+    avgPrice,
+    unit,
+    sampleCount,
+    source,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'prices';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Price> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('fruit_id')) {
+      context.handle(
+        _fruitIdMeta,
+        fruitId.isAcceptableOrUnknown(data['fruit_id']!, _fruitIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fruitIdMeta);
+    }
+    if (data.containsKey('avg_price')) {
+      context.handle(
+        _avgPriceMeta,
+        avgPrice.isAcceptableOrUnknown(data['avg_price']!, _avgPriceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_avgPriceMeta);
+    }
+    if (data.containsKey('unit')) {
+      context.handle(
+        _unitMeta,
+        unit.isAcceptableOrUnknown(data['unit']!, _unitMeta),
+      );
+    }
+    if (data.containsKey('sample_count')) {
+      context.handle(
+        _sampleCountMeta,
+        sampleCount.isAcceptableOrUnknown(
+          data['sample_count']!,
+          _sampleCountMeta,
+        ),
+      );
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {fruitId};
+  @override
+  Price map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Price(
+      fruitId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}fruit_id'],
+      )!,
+      avgPrice: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}avg_price'],
+      )!,
+      unit: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}unit'],
+      )!,
+      sampleCount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}sample_count'],
+      )!,
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $PricesTable createAlias(String alias) {
+    return $PricesTable(attachedDatabase, alias);
+  }
+}
+
+class Price extends DataClass implements Insertable<Price> {
+  final String fruitId;
+  final double avgPrice;
+  final String unit;
+  final int sampleCount;
+  final String source;
+  final String updatedAt;
+  const Price({
+    required this.fruitId,
+    required this.avgPrice,
+    required this.unit,
+    required this.sampleCount,
+    required this.source,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['fruit_id'] = Variable<String>(fruitId);
+    map['avg_price'] = Variable<double>(avgPrice);
+    map['unit'] = Variable<String>(unit);
+    map['sample_count'] = Variable<int>(sampleCount);
+    map['source'] = Variable<String>(source);
+    map['updated_at'] = Variable<String>(updatedAt);
+    return map;
+  }
+
+  PricesCompanion toCompanion(bool nullToAbsent) {
+    return PricesCompanion(
+      fruitId: Value(fruitId),
+      avgPrice: Value(avgPrice),
+      unit: Value(unit),
+      sampleCount: Value(sampleCount),
+      source: Value(source),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory Price.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Price(
+      fruitId: serializer.fromJson<String>(json['fruitId']),
+      avgPrice: serializer.fromJson<double>(json['avgPrice']),
+      unit: serializer.fromJson<String>(json['unit']),
+      sampleCount: serializer.fromJson<int>(json['sampleCount']),
+      source: serializer.fromJson<String>(json['source']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'fruitId': serializer.toJson<String>(fruitId),
+      'avgPrice': serializer.toJson<double>(avgPrice),
+      'unit': serializer.toJson<String>(unit),
+      'sampleCount': serializer.toJson<int>(sampleCount),
+      'source': serializer.toJson<String>(source),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+    };
+  }
+
+  Price copyWith({
+    String? fruitId,
+    double? avgPrice,
+    String? unit,
+    int? sampleCount,
+    String? source,
+    String? updatedAt,
+  }) => Price(
+    fruitId: fruitId ?? this.fruitId,
+    avgPrice: avgPrice ?? this.avgPrice,
+    unit: unit ?? this.unit,
+    sampleCount: sampleCount ?? this.sampleCount,
+    source: source ?? this.source,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  Price copyWithCompanion(PricesCompanion data) {
+    return Price(
+      fruitId: data.fruitId.present ? data.fruitId.value : this.fruitId,
+      avgPrice: data.avgPrice.present ? data.avgPrice.value : this.avgPrice,
+      unit: data.unit.present ? data.unit.value : this.unit,
+      sampleCount: data.sampleCount.present
+          ? data.sampleCount.value
+          : this.sampleCount,
+      source: data.source.present ? data.source.value : this.source,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Price(')
+          ..write('fruitId: $fruitId, ')
+          ..write('avgPrice: $avgPrice, ')
+          ..write('unit: $unit, ')
+          ..write('sampleCount: $sampleCount, ')
+          ..write('source: $source, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(fruitId, avgPrice, unit, sampleCount, source, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Price &&
+          other.fruitId == this.fruitId &&
+          other.avgPrice == this.avgPrice &&
+          other.unit == this.unit &&
+          other.sampleCount == this.sampleCount &&
+          other.source == this.source &&
+          other.updatedAt == this.updatedAt);
+}
+
+class PricesCompanion extends UpdateCompanion<Price> {
+  final Value<String> fruitId;
+  final Value<double> avgPrice;
+  final Value<String> unit;
+  final Value<int> sampleCount;
+  final Value<String> source;
+  final Value<String> updatedAt;
+  final Value<int> rowid;
+  const PricesCompanion({
+    this.fruitId = const Value.absent(),
+    this.avgPrice = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.sampleCount = const Value.absent(),
+    this.source = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PricesCompanion.insert({
+    required String fruitId,
+    required double avgPrice,
+    this.unit = const Value.absent(),
+    this.sampleCount = const Value.absent(),
+    this.source = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : fruitId = Value(fruitId),
+       avgPrice = Value(avgPrice);
+  static Insertable<Price> custom({
+    Expression<String>? fruitId,
+    Expression<double>? avgPrice,
+    Expression<String>? unit,
+    Expression<int>? sampleCount,
+    Expression<String>? source,
+    Expression<String>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (fruitId != null) 'fruit_id': fruitId,
+      if (avgPrice != null) 'avg_price': avgPrice,
+      if (unit != null) 'unit': unit,
+      if (sampleCount != null) 'sample_count': sampleCount,
+      if (source != null) 'source': source,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PricesCompanion copyWith({
+    Value<String>? fruitId,
+    Value<double>? avgPrice,
+    Value<String>? unit,
+    Value<int>? sampleCount,
+    Value<String>? source,
+    Value<String>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return PricesCompanion(
+      fruitId: fruitId ?? this.fruitId,
+      avgPrice: avgPrice ?? this.avgPrice,
+      unit: unit ?? this.unit,
+      sampleCount: sampleCount ?? this.sampleCount,
+      source: source ?? this.source,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (fruitId.present) {
+      map['fruit_id'] = Variable<String>(fruitId.value);
+    }
+    if (avgPrice.present) {
+      map['avg_price'] = Variable<double>(avgPrice.value);
+    }
+    if (unit.present) {
+      map['unit'] = Variable<String>(unit.value);
+    }
+    if (sampleCount.present) {
+      map['sample_count'] = Variable<int>(sampleCount.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<String>(source.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PricesCompanion(')
+          ..write('fruitId: $fruitId, ')
+          ..write('avgPrice: $avgPrice, ')
+          ..write('unit: $unit, ')
+          ..write('sampleCount: $sampleCount, ')
+          ..write('source: $source, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -2304,6 +2755,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $FavoritesTable favorites = $FavoritesTable(this);
   late final $UserPrefsTable userPrefs = $UserPrefsTable(this);
+  late final $PricesTable prices = $PricesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2314,6 +2766,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     recommendations,
     favorites,
     userPrefs,
+    prices,
   ];
 }
 
@@ -2556,6 +3009,7 @@ typedef $$FruitsTableCreateCompanionBuilder =
       required String id,
       required String name,
       required String englishName,
+      Value<String> emoji,
       required String image,
       required String colorHex,
       required double brixMin,
@@ -2576,6 +3030,7 @@ typedef $$FruitsTableUpdateCompanionBuilder =
       Value<String> id,
       Value<String> name,
       Value<String> englishName,
+      Value<String> emoji,
       Value<String> image,
       Value<String> colorHex,
       Value<double> brixMin,
@@ -2613,6 +3068,11 @@ class $$FruitsTableFilterComposer
 
   ColumnFilters<String> get englishName => $composableBuilder(
     column: $table.englishName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get emoji => $composableBuilder(
+    column: $table.emoji,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2706,6 +3166,11 @@ class $$FruitsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get emoji => $composableBuilder(
+    column: $table.emoji,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get image => $composableBuilder(
     column: $table.image,
     builder: (column) => ColumnOrderings(column),
@@ -2792,6 +3257,9 @@ class $$FruitsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get emoji =>
+      $composableBuilder(column: $table.emoji, builder: (column) => column);
+
   GeneratedColumn<String> get image =>
       $composableBuilder(column: $table.image, builder: (column) => column);
 
@@ -2877,6 +3345,7 @@ class $$FruitsTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> englishName = const Value.absent(),
+                Value<String> emoji = const Value.absent(),
                 Value<String> image = const Value.absent(),
                 Value<String> colorHex = const Value.absent(),
                 Value<double> brixMin = const Value.absent(),
@@ -2895,6 +3364,7 @@ class $$FruitsTableTableManager
                 id: id,
                 name: name,
                 englishName: englishName,
+                emoji: emoji,
                 image: image,
                 colorHex: colorHex,
                 brixMin: brixMin,
@@ -2915,6 +3385,7 @@ class $$FruitsTableTableManager
                 required String id,
                 required String name,
                 required String englishName,
+                Value<String> emoji = const Value.absent(),
                 required String image,
                 required String colorHex,
                 required double brixMin,
@@ -2933,6 +3404,7 @@ class $$FruitsTableTableManager
                 id: id,
                 name: name,
                 englishName: englishName,
+                emoji: emoji,
                 image: image,
                 colorHex: colorHex,
                 brixMin: brixMin,
@@ -3497,6 +3969,221 @@ typedef $$UserPrefsTableProcessedTableManager =
       UserPref,
       PrefetchHooks Function()
     >;
+typedef $$PricesTableCreateCompanionBuilder =
+    PricesCompanion Function({
+      required String fruitId,
+      required double avgPrice,
+      Value<String> unit,
+      Value<int> sampleCount,
+      Value<String> source,
+      Value<String> updatedAt,
+      Value<int> rowid,
+    });
+typedef $$PricesTableUpdateCompanionBuilder =
+    PricesCompanion Function({
+      Value<String> fruitId,
+      Value<double> avgPrice,
+      Value<String> unit,
+      Value<int> sampleCount,
+      Value<String> source,
+      Value<String> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$PricesTableFilterComposer
+    extends Composer<_$AppDatabase, $PricesTable> {
+  $$PricesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get fruitId => $composableBuilder(
+    column: $table.fruitId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get avgPrice => $composableBuilder(
+    column: $table.avgPrice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sampleCount => $composableBuilder(
+    column: $table.sampleCount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$PricesTableOrderingComposer
+    extends Composer<_$AppDatabase, $PricesTable> {
+  $$PricesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get fruitId => $composableBuilder(
+    column: $table.fruitId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get avgPrice => $composableBuilder(
+    column: $table.avgPrice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get unit => $composableBuilder(
+    column: $table.unit,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sampleCount => $composableBuilder(
+    column: $table.sampleCount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$PricesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PricesTable> {
+  $$PricesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get fruitId =>
+      $composableBuilder(column: $table.fruitId, builder: (column) => column);
+
+  GeneratedColumn<double> get avgPrice =>
+      $composableBuilder(column: $table.avgPrice, builder: (column) => column);
+
+  GeneratedColumn<String> get unit =>
+      $composableBuilder(column: $table.unit, builder: (column) => column);
+
+  GeneratedColumn<int> get sampleCount => $composableBuilder(
+    column: $table.sampleCount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$PricesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $PricesTable,
+          Price,
+          $$PricesTableFilterComposer,
+          $$PricesTableOrderingComposer,
+          $$PricesTableAnnotationComposer,
+          $$PricesTableCreateCompanionBuilder,
+          $$PricesTableUpdateCompanionBuilder,
+          (Price, BaseReferences<_$AppDatabase, $PricesTable, Price>),
+          Price,
+          PrefetchHooks Function()
+        > {
+  $$PricesTableTableManager(_$AppDatabase db, $PricesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PricesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PricesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PricesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> fruitId = const Value.absent(),
+                Value<double> avgPrice = const Value.absent(),
+                Value<String> unit = const Value.absent(),
+                Value<int> sampleCount = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PricesCompanion(
+                fruitId: fruitId,
+                avgPrice: avgPrice,
+                unit: unit,
+                sampleCount: sampleCount,
+                source: source,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String fruitId,
+                required double avgPrice,
+                Value<String> unit = const Value.absent(),
+                Value<int> sampleCount = const Value.absent(),
+                Value<String> source = const Value.absent(),
+                Value<String> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => PricesCompanion.insert(
+                fruitId: fruitId,
+                avgPrice: avgPrice,
+                unit: unit,
+                sampleCount: sampleCount,
+                source: source,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$PricesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $PricesTable,
+      Price,
+      $$PricesTableFilterComposer,
+      $$PricesTableOrderingComposer,
+      $$PricesTableAnnotationComposer,
+      $$PricesTableCreateCompanionBuilder,
+      $$PricesTableUpdateCompanionBuilder,
+      (Price, BaseReferences<_$AppDatabase, $PricesTable, Price>),
+      Price,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3511,4 +4198,6 @@ class $AppDatabaseManager {
       $$FavoritesTableTableManager(_db, _db.favorites);
   $$UserPrefsTableTableManager get userPrefs =>
       $$UserPrefsTableTableManager(_db, _db.userPrefs);
+  $$PricesTableTableManager get prices =>
+      $$PricesTableTableManager(_db, _db.prices);
 }

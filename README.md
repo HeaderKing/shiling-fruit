@@ -81,7 +81,6 @@ shiling-fruit/
 flutter pub get
 
 # 2) 生成 Drift 代码（若 lib/data/database.g.dart 缺失）
-#    ⚠️ Windows 中文路径会导致 dart AOT 编译失败 - 临时复制到无中文路径运行
 dart run build_runner build --delete-conflicting-outputs
 
 # 3) 运行 (Android 设备 / Windows Desktop)

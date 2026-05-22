@@ -36,7 +36,12 @@ class FruitIndexPage extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: Column(
                   children: [
-                    FruitThumb(colorHex: f.colorHex, name: f.name, size: 64),
+                    FruitThumb(
+                      colorHex: f.colorHex,
+                      name: f.name,
+                      emoji: f.emoji,
+                      size: 64,
+                    ),
                     const SizedBox(height: 8),
                     Text(
                       f.name,

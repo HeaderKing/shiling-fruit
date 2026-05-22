@@ -1,46 +1,67 @@
 import 'package:flutter/material.dart';
 
-/// 圆形色块占位图 + 中心首字。颜色由 fruit.colorHex 给出。
+/// 圆形渐变底色 + emoji 字符显示。
+/// 若 emoji 为空，回退到中心首字（旧行为）。
 class FruitThumb extends StatelessWidget {
   const FruitThumb({
     super.key,
     required this.colorHex,
     required this.name,
+    this.emoji,
     this.size = 48,
   });
 
   final String colorHex;
   final String name;
+  final String? emoji;
   final double size;
 
   @override
   Widget build(BuildContext context) {
     final color = _hexToColor(colorHex);
+    final hsl = HSLColor.fromColor(color);
+    final lighter = hsl
+        .withLightness((hsl.lightness + 0.2).clamp(0.0, 1.0))
+        .toColor();
+    final softer = hsl
+        .withLightness((hsl.lightness + 0.35).clamp(0.0, 1.0))
+        .withSaturation((hsl.saturation * 0.6).clamp(0.0, 1.0))
+        .toColor();
+    final useEmoji = (emoji ?? '').isNotEmpty;
     final lum = color.computeLuminance();
-    final fg = lum > 0.55 ? Colors.black87 : Colors.white;
+    final fallbackFg = lum > 0.55 ? Colors.black87 : Colors.white;
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: color,
         shape: BoxShape.circle,
-        boxShadow: const [
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [softer, lighter],
+        ),
+        boxShadow: [
           BoxShadow(
-            color: Color(0x14000000),
-            blurRadius: 4,
-            offset: Offset(0, 2),
+            color: color.withValues(alpha: 0.18),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       alignment: Alignment.center,
-      child: Text(
-        name.isEmpty ? '?' : name.characters.first,
-        style: TextStyle(
-          color: fg,
-          fontSize: size * 0.42,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
+      child: useEmoji
+          ? Text(
+              emoji!,
+              style: TextStyle(fontSize: size * 0.58, height: 1),
+            )
+          : Text(
+              name.isEmpty ? '?' : name.characters.first,
+              style: TextStyle(
+                color: fallbackFg,
+                fontSize: size * 0.42,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
     );
   }
 

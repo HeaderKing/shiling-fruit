@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart' show ThemeMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/database.dart';
+import '../services/data_updater.dart';
 import '../services/location_service.dart';
 import '../utils/date_utils.dart';
 
@@ -8,6 +10,14 @@ import '../utils/date_utils.dart';
 final dbProvider = Provider<AppDatabase>((ref) {
   throw UnimplementedError('Override in main()');
 });
+
+// Data updater
+final dataUpdaterProvider = Provider<DataUpdater>((ref) {
+  throw UnimplementedError('Override in main()');
+});
+
+// 全局主题模式（跟随系统/亮/暗）
+final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
 
 // Services
 final locationServiceProvider = Provider<LocationService>((ref) {
@@ -66,6 +76,12 @@ final monthRecommendationsProvider =
 final fruitProvider =
     FutureProvider.family<Fruit?, String>((ref, id) async {
   return ref.watch(dbProvider).findFruit(id);
+});
+
+// 单个水果价格
+final fruitPriceProvider =
+    FutureProvider.family<Price?, String>((ref, id) async {
+  return ref.watch(dbProvider).getPrice(id);
 });
 
 // 全部水果（索引页）

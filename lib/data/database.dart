@@ -26,6 +26,7 @@ class Fruits extends Table {
   TextColumn get id => text()();
   TextColumn get name => text()();
   TextColumn get englishName => text().named('english_name')();
+  TextColumn get emoji => text().withDefault(const Constant(''))();
   TextColumn get image => text()();
   TextColumn get colorHex => text().named('color_hex')();
   RealColumn get brixMin => real().named('brix_min')();
@@ -75,14 +76,41 @@ class UserPrefs extends Table {
   Set<Column> get primaryKey => {key};
 }
 
+class Prices extends Table {
+  TextColumn get fruitId => text().named('fruit_id')();
+  RealColumn get avgPrice => real().named('avg_price')();
+  TextColumn get unit => text().withDefault(const Constant('元/kg'))();
+  IntColumn get sampleCount =>
+      integer().named('sample_count').withDefault(const Constant(0))();
+  TextColumn get source => text().withDefault(const Constant(''))();
+  TextColumn get updatedAt =>
+      text().named('updated_at').withDefault(const Constant(''))();
+
+  @override
+  Set<Column> get primaryKey => {fruitId};
+}
+
 // ===== Database =====
 
-@DriftDatabase(tables: [Cities, Fruits, Recommendations, Favorites, UserPrefs])
+@DriftDatabase(tables: [Cities, Fruits, Recommendations, Favorites, UserPrefs, Prices])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) => m.createAll(),
+        onUpgrade: (m, from, to) async {
+          if (from < 2) {
+            await m.addColumn(fruits, fruits.emoji);
+          }
+          if (from < 3) {
+            await m.createTable(prices);
+          }
+        },
+      );
 
   // ----- 查询 API -----
 
@@ -155,6 +183,32 @@ class AppDatabase extends _$AppDatabase {
       value: value,
     ));
   }
+
+  // ----- Prices -----
+
+  Future<Price?> getPrice(String fruitId) =>
+      (select(prices)..where((p) => p.fruitId.equals(fruitId)))
+          .getSingleOrNull();
+
+  Future<void> upsertPrice({
+    required String fruitId,
+    required double avgPrice,
+    String unit = '元/kg',
+    int sampleCount = 0,
+    String source = '',
+    String updatedAt = '',
+  }) async {
+    await into(prices).insertOnConflictUpdate(PricesCompanion.insert(
+      fruitId: fruitId,
+      avgPrice: avgPrice,
+      unit: Value(unit),
+      sampleCount: Value(sampleCount),
+      source: Value(source),
+      updatedAt: Value(updatedAt),
+    ));
+  }
+
+  Future<void> clearPrices() => delete(prices).go();
 }
 
 LazyDatabase _openConnection() {

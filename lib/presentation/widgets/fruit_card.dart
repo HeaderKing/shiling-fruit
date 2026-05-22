@@ -22,91 +22,159 @@ class FruitCard extends StatelessWidget {
   Color _localityColor(String? l) {
     switch (l) {
       case '本地特产':
-        return Colors.green;
+        return const Color(0xFF2E7D32);
       case '邻近产区':
-        return Colors.orange;
+        return const Color(0xFFEF6C00);
       case '外来':
-        return Colors.blueGrey;
+        return const Color(0xFF546E7A);
       default:
         return Colors.grey;
     }
   }
 
+  ({String label, Color color, IconData icon}) _scoreInfo(int s) {
+    if (s >= 85) {
+      return (label: '强荐', color: const Color(0xFFD84315), icon: Icons.star_rounded);
+    }
+    if (s >= 70) {
+      return (label: '推荐', color: const Color(0xFFEF6C00), icon: Icons.thumb_up_rounded);
+    }
+    return (label: '可吃', color: const Color(0xFF607D8B), icon: Icons.check_circle_outline_rounded);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              FruitThumb(colorHex: fruit.colorHex, name: fruit.name, size: 56),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            fruit.name,
-                            style: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        if (score != null)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange.shade50,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      child: Material(
+        color: scheme.surface,
+        elevation: 0,
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: scheme.outlineVariant.withValues(alpha: 0.6),
+                width: 1,
+              ),
+            ),
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                FruitThumb(
+                  colorHex: fruit.colorHex,
+                  name: fruit.name,
+                  emoji: fruit.emoji,
+                  size: 58,
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
                             child: Text(
-                              '$score',
-                              style: TextStyle(
-                                color: Colors.deepOrange.shade700,
-                                fontWeight: FontWeight.w600,
+                              fruit.name,
+                              style: const TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    if (locality != null)
-                      Container(
-                        margin: const EdgeInsets.only(top: 2, bottom: 4),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 1),
-                        decoration: BoxDecoration(
-                          color: _localityColor(locality).withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          locality!,
+                          if (score != null) _buildScoreBadge(_scoreInfo(score!)),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          if (locality != null) _buildLocalityChip(locality!),
+                          if (locality != null) const SizedBox(width: 6),
+                          if (fruit.peakSeason.isNotEmpty)
+                            Flexible(
+                              child: Text(
+                                fruit.peakSeason,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: scheme.onSurfaceVariant,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                        ],
+                      ),
+                      if (reason != null) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          reason!,
                           style: TextStyle(
-                            color: _localityColor(locality),
-                            fontSize: 12,
+                            color: scheme.onSurfaceVariant,
+                            fontSize: 13,
+                            height: 1.35,
                           ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    if (reason != null)
-                      Text(
-                        reason!,
-                        style: TextStyle(
-                            color: Colors.grey.shade700, fontSize: 13),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                  ],
+                      ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScoreBadge(({String label, Color color, IconData icon}) info) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: info.color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(info.icon, size: 13, color: info.color),
+          const SizedBox(width: 3),
+          Text(
+            info.label,
+            style: TextStyle(
+              color: info.color,
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocalityChip(String l) {
+    final c = _localityColor(l);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      decoration: BoxDecoration(
+        color: c.withValues(alpha: 0.13),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: c.withValues(alpha: 0.4), width: 1),
+      ),
+      child: Text(
+        l,
+        style: TextStyle(
+          color: c,
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );

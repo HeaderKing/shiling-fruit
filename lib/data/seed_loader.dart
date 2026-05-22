@@ -1,38 +1,40 @@
 import 'dart:convert';
 
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:drift/drift.dart' show Value;
 
+import '../services/data_updater.dart';
 import 'database.dart';
 
-/// 把 assets/data/*.json 导入到 SQLite。
-/// 用 UserPrefs 表的 `seed_version` 记录已导入版本，避免重复导入。
+/// 把数据 JSON 导入到 SQLite。
+/// 优先从 documents/data/（DataUpdater 维护）读取；不存在时回退 assets。
 class SeedLoader {
-  SeedLoader(this._db);
+  SeedLoader(this._db, this._updater);
   final AppDatabase _db;
+  final DataUpdater _updater;
 
-  /// 升级数据时把这个值加一，重启 App 会重新加载。
-  static const _currentVersion = '1';
   static const _versionKey = 'seed_version';
 
   Future<void> ensureLoaded() async {
+    final dataVersion = (await _updater.currentVersion()).toString();
     final current = await _db.getPref(_versionKey);
-    if (current == _currentVersion) return;
+    if (current == dataVersion) return;
 
     await _db.transaction(() async {
-      // 清空旧数据（保留 favorites 和 prefs）
       await _db.delete(_db.recommendations).go();
       await _db.delete(_db.fruits).go();
       await _db.delete(_db.cities).go();
+      await _db.clearPrices();
 
       await _loadCities();
       await _loadFruits();
       await _loadRecommendations();
-      await _db.setPref(_versionKey, _currentVersion);
+      await _loadPrices();
+      await _db.setPref(_versionKey, dataVersion);
     });
   }
 
   Future<void> _loadCities() async {
-    final raw = await rootBundle.loadString('assets/data/cities.json');
+    final raw = await _updater.readDataFile('cities.json');
     final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
     await _db.batch((b) {
       for (final c in list) {
@@ -53,7 +55,7 @@ class SeedLoader {
   }
 
   Future<void> _loadFruits() async {
-    final raw = await rootBundle.loadString('assets/data/fruits.json');
+    final raw = await _updater.readDataFile('fruits.json');
     final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
     await _db.batch((b) {
       for (final f in list) {
@@ -63,6 +65,7 @@ class SeedLoader {
             id: f['id'] as String,
             name: f['name'] as String,
             englishName: f['english_name'] as String? ?? '',
+            emoji: Value(f['emoji'] as String? ?? ''),
             image: f['image'] as String? ?? '',
             colorHex: f['color_hex'] as String? ?? '#CCCCCC',
             brixMin: (f['brix_min'] as num).toDouble(),
@@ -83,8 +86,7 @@ class SeedLoader {
   }
 
   Future<void> _loadRecommendations() async {
-    final raw =
-        await rootBundle.loadString('assets/data/recommendations.json');
+    final raw = await _updater.readDataFile('recommendations.json');
     final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
     await _db.batch((b) {
       for (final r in list) {
@@ -102,5 +104,25 @@ class SeedLoader {
         );
       }
     });
+  }
+
+  Future<void> _loadPrices() async {
+    String raw;
+    try {
+      raw = await _updater.readDataFile('prices.json');
+    } catch (_) {
+      return; // 价格数据可选，缺失时跳过
+    }
+    final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
+    for (final p in list) {
+      await _db.upsertPrice(
+        fruitId: p['fruit_id'] as String,
+        avgPrice: (p['avg_price'] as num).toDouble(),
+        unit: p['unit'] as String? ?? '元/kg',
+        sampleCount: (p['sample_count'] as num?)?.toInt() ?? 0,
+        source: p['source'] as String? ?? '',
+        updatedAt: p['updated_at'] as String? ?? '',
+      );
+    }
   }
 }

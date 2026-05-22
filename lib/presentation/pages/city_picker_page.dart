@@ -6,13 +6,41 @@ import '../providers.dart';
 class CityPickerPage extends ConsumerWidget {
   const CityPickerPage({super.key});
 
+  Future<void> _locate(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.showSnackBar(const SnackBar(
+      content: Text('正在定位…'),
+      duration: Duration(seconds: 2),
+    ));
+    final cityId = await ref.read(locationServiceProvider).currentCityId();
+    if (!context.mounted) return;
+    if (cityId == null) {
+      messenger.showSnackBar(const SnackBar(
+        content: Text('定位失败：请检查权限或开启位置服务'),
+      ));
+      return;
+    }
+    ref.read(selectedCityIdProvider.notifier).state = cityId;
+    await ref.read(dbProvider).setPref('last_city', cityId);
+    if (context.mounted) Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final regions = ref.watch(citiesByRegionProvider);
     final selected = ref.watch(selectedCityIdProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('选择城市')),
+      appBar: AppBar(
+        title: const Text('选择城市'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.my_location_rounded),
+            tooltip: '使用当前定位',
+            onPressed: () => _locate(context, ref),
+          ),
+        ],
+      ),
       body: regions.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('错误: $e')),

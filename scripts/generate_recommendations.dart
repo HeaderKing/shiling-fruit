@@ -7,7 +7,7 @@ import 'dart:io';
 import 'dart:convert';
 
 const _periodNames = ['上旬', '中旬', '下旬'];
-const _maxPerSlot = 5;
+const _maxPerSlot = 8;
 
 void main() {
   final root = Directory.current.path;

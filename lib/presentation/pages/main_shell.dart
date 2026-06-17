@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../features/community/pages/community_page.dart';
 import '../../features/home/pages/home_page.dart';
-import '../../features/profile/pages/favorites_page.dart';
 import '../../features/profile/pages/settings_page.dart';
 import 'calendar_page.dart';
 
@@ -18,7 +18,7 @@ class _MainShellState extends State<MainShell> {
   static const _pages = <Widget>[
     HomePage(),
     CalendarPage(),
-    FavoritesPage(),
+    CommunityPage(),
     SettingsPage(),
   ];
 
@@ -41,9 +41,9 @@ class _MainShellState extends State<MainShell> {
             label: '月历',
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite_outline_rounded),
-            selectedIcon: Icon(Icons.favorite_rounded),
-            label: '收藏',
+            icon: Icon(Icons.groups_outlined),
+            selectedIcon: Icon(Icons.groups_rounded),
+            label: '社区',
           ),
           NavigationDestination(
             icon: Icon(Icons.tune_outlined),

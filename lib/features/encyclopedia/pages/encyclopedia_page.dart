@@ -5,6 +5,7 @@ import '../../../data/database.dart';
 import '../../../presentation/providers.dart';
 import '../../home/providers/home_providers.dart';
 import '../../home/widgets/fruit_thumb.dart';
+import 'fruit_encyclopedia_page.dart';
 
 class EncyclopediaPage extends ConsumerWidget {
   const EncyclopediaPage({super.key});
@@ -63,7 +64,7 @@ class EncyclopediaPage extends ConsumerWidget {
 
   void _openSearch(BuildContext context) => showSearch(context: context, delegate: FruitSearchDelegate());
   void _openFruit(BuildContext context, String fruitId) => Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => Scaffold(appBar: AppBar(title: const Text('详情')), body: const Center(child: Text('百科详情页升级中')))));
+      builder: (_) => FruitEncyclopediaPage(fruitId: fruitId)));
   void _openCategory(BuildContext context, String category) => Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => Scaffold(appBar: AppBar(title: Text(category)), body: const Center(child: Text('分类浏览页')))));
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../features/community/pages/community_page.dart';
+import '../../features/encyclopedia/pages/encyclopedia_page.dart';
 import '../../features/home/pages/home_page.dart';
 import '../../features/profile/pages/settings_page.dart';
-import 'calendar_page.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -17,7 +17,7 @@ class _MainShellState extends State<MainShell> {
 
   static const _pages = <Widget>[
     HomePage(),
-    CalendarPage(),
+    EncyclopediaPage(),
     CommunityPage(),
     SettingsPage(),
   ];
@@ -36,9 +36,9 @@ class _MainShellState extends State<MainShell> {
             label: '首页',
           ),
           NavigationDestination(
-            icon: Icon(Icons.calendar_month_outlined),
-            selectedIcon: Icon(Icons.calendar_month_rounded),
-            label: '月历',
+            icon: Icon(Icons.menu_book_outlined),
+            selectedIcon: Icon(Icons.menu_book_rounded),
+            label: '百科',
           ),
           NavigationDestination(
             icon: Icon(Icons.groups_outlined),

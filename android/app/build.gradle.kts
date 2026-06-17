@@ -23,13 +23,20 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.shilingfruit.shiling_fruit"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        // You can update the following values to match your application goals.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // 仅构建 x86_64（本地开发虚拟机/模拟器），避免下载 arm .so 时网络超时
+        // 如需发版到真机请改为 arm64-v8a 或移除整个 ndk 块
+        ndk {
+            abiFilters += listOf("x86_64")
+        }
     }
+
+    ndkVersion = "28.2.13676358"
 
     buildTypes {
         release {

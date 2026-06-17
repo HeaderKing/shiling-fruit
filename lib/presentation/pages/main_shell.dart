@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../features/home/pages/home_page.dart';
+import '../../features/profile/pages/favorites_page.dart';
+import '../../features/profile/pages/settings_page.dart';
 import 'calendar_page.dart';
-import 'favorites_page.dart';
-import 'home_page.dart';
-import 'settings_page.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});

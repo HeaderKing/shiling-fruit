@@ -1,6 +1,9 @@
 allprojects {
     repositories {
         google()
+        // 阿里云 Maven 镜像（CN 环境加速，优先于 mavenCentral）
+        maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
         mavenCentral()
     }
 }

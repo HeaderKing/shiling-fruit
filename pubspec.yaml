@@ -29,6 +29,16 @@ dependencies:
   shared_preferences: ^2.3.2
   http: ^1.2.0
 
+  # Supabase（认证 + 数据库 + 存储）
+  supabase_flutter: ^2.5.0
+
+  # 图片处理
+  image_picker: ^1.0.7
+  cached_network_image: ^3.3.1
+
+  # 工具
+  uuid: ^4.3.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

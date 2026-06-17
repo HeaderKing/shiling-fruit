@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app.dart';
+import 'core/config/env.dart';
 import 'data/database.dart';
 import 'data/seed_loader.dart';
 import 'presentation/providers.dart';
@@ -11,6 +13,14 @@ import 'services/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 初始化 Supabase（认证 + 数据库 + 存储）
+  await Supabase.initialize(
+    url: Env.supabaseUrl,
+    publishableKey: Env.supabaseAnonKey,
+  );
+
+  // 初始化离线数据库（原有逻辑保留）
   final db = AppDatabase();
   final updater = DataUpdater();
   await updater.ensureLocalCopy();

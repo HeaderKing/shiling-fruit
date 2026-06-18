@@ -7,7 +7,6 @@ import '../../../data/database.dart';
 import '../../../presentation/providers.dart';
 import '../../../shared/widgets/error_view.dart';
 import '../../../shared/widgets/loading_overlay.dart';
-import '../../../shared/theme/season.dart';
 import '../../home/widgets/fruit_thumb.dart';
 
 /// 百科详情页 — 升级版
@@ -83,6 +82,12 @@ class _FruitEncyclopediaPageState extends ConsumerState<FruitEncyclopediaPage> {
                 // 基础信息
                 _InfoCard(fruit: fruit, origins: origins),
                 const SizedBox(height: 16),
+
+                // 挑选技巧
+                if (fruit.pickingTips.isNotEmpty) ...[
+                  _TipCard(tips: fruit.pickingTips),
+                  const SizedBox(height: 16),
+                ],
 
                 // 品种
                 if (varieties.isNotEmpty) ...[

@@ -45,6 +45,13 @@ class Fruits extends Table {
       text().named('contraindications_json')();
   TextColumn get originsJson => text().named('origins_json')();
 
+  // 百科扩展字段
+  TextColumn get pickingTips => text().named('picking_tips')();
+  TextColumn get storageTips => text().named('storage_tips')();
+  TextColumn get bestEatMethod => text().named('best_eat_method')();
+  TextColumn get varietyJson => text().named('variety_json')();
+  TextColumn get gradeStd => text().named('grade_std')();
+
   @override
   Set<Column> get primaryKey => {id};
 }

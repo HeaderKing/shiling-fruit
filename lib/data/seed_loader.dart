@@ -79,6 +79,11 @@ class SeedLoader {
             benefitsJson: jsonEncode(f['benefits'] ?? []),
             contraindicationsJson: jsonEncode(f['contraindications'] ?? []),
             originsJson: jsonEncode(f['origins'] ?? []),
+            pickingTips: (f['picking_tips'] as String?) ?? '',
+            storageTips: (f['storage_tips'] as String?) ?? '',
+            bestEatMethod: (f['best_eat_method'] as String?) ?? '',
+            varietyJson: jsonEncode(f['varieties'] ?? []),
+            gradeStd: (f['grade_std'] as String?) ?? '',
           ),
         );
       }

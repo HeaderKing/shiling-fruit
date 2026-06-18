@@ -640,6 +640,61 @@ class $FruitsTable extends Fruits with TableInfo<$FruitsTable, Fruit> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _pickingTipsMeta = const VerificationMeta(
+    'pickingTips',
+  );
+  @override
+  late final GeneratedColumn<String> pickingTips = GeneratedColumn<String>(
+    'picking_tips',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _storageTipsMeta = const VerificationMeta(
+    'storageTips',
+  );
+  @override
+  late final GeneratedColumn<String> storageTips = GeneratedColumn<String>(
+    'storage_tips',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _bestEatMethodMeta = const VerificationMeta(
+    'bestEatMethod',
+  );
+  @override
+  late final GeneratedColumn<String> bestEatMethod = GeneratedColumn<String>(
+    'best_eat_method',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _varietyJsonMeta = const VerificationMeta(
+    'varietyJson',
+  );
+  @override
+  late final GeneratedColumn<String> varietyJson = GeneratedColumn<String>(
+    'variety_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _gradeStdMeta = const VerificationMeta(
+    'gradeStd',
+  );
+  @override
+  late final GeneratedColumn<String> gradeStd = GeneratedColumn<String>(
+    'grade_std',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -659,6 +714,11 @@ class $FruitsTable extends Fruits with TableInfo<$FruitsTable, Fruit> {
     benefitsJson,
     contraindicationsJson,
     originsJson,
+    pickingTips,
+    storageTips,
+    bestEatMethod,
+    varietyJson,
+    gradeStd,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -824,6 +884,58 @@ class $FruitsTable extends Fruits with TableInfo<$FruitsTable, Fruit> {
     } else if (isInserting) {
       context.missing(_originsJsonMeta);
     }
+    if (data.containsKey('picking_tips')) {
+      context.handle(
+        _pickingTipsMeta,
+        pickingTips.isAcceptableOrUnknown(
+          data['picking_tips']!,
+          _pickingTipsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_pickingTipsMeta);
+    }
+    if (data.containsKey('storage_tips')) {
+      context.handle(
+        _storageTipsMeta,
+        storageTips.isAcceptableOrUnknown(
+          data['storage_tips']!,
+          _storageTipsMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_storageTipsMeta);
+    }
+    if (data.containsKey('best_eat_method')) {
+      context.handle(
+        _bestEatMethodMeta,
+        bestEatMethod.isAcceptableOrUnknown(
+          data['best_eat_method']!,
+          _bestEatMethodMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_bestEatMethodMeta);
+    }
+    if (data.containsKey('variety_json')) {
+      context.handle(
+        _varietyJsonMeta,
+        varietyJson.isAcceptableOrUnknown(
+          data['variety_json']!,
+          _varietyJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_varietyJsonMeta);
+    }
+    if (data.containsKey('grade_std')) {
+      context.handle(
+        _gradeStdMeta,
+        gradeStd.isAcceptableOrUnknown(data['grade_std']!, _gradeStdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_gradeStdMeta);
+    }
     return context;
   }
 
@@ -901,6 +1013,26 @@ class $FruitsTable extends Fruits with TableInfo<$FruitsTable, Fruit> {
         DriftSqlType.string,
         data['${effectivePrefix}origins_json'],
       )!,
+      pickingTips: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}picking_tips'],
+      )!,
+      storageTips: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}storage_tips'],
+      )!,
+      bestEatMethod: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}best_eat_method'],
+      )!,
+      varietyJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}variety_json'],
+      )!,
+      gradeStd: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}grade_std'],
+      )!,
     );
   }
 
@@ -928,6 +1060,11 @@ class Fruit extends DataClass implements Insertable<Fruit> {
   final String benefitsJson;
   final String contraindicationsJson;
   final String originsJson;
+  final String pickingTips;
+  final String storageTips;
+  final String bestEatMethod;
+  final String varietyJson;
+  final String gradeStd;
   const Fruit({
     required this.id,
     required this.name,
@@ -946,6 +1083,11 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     required this.benefitsJson,
     required this.contraindicationsJson,
     required this.originsJson,
+    required this.pickingTips,
+    required this.storageTips,
+    required this.bestEatMethod,
+    required this.varietyJson,
+    required this.gradeStd,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -967,6 +1109,11 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     map['benefits_json'] = Variable<String>(benefitsJson);
     map['contraindications_json'] = Variable<String>(contraindicationsJson);
     map['origins_json'] = Variable<String>(originsJson);
+    map['picking_tips'] = Variable<String>(pickingTips);
+    map['storage_tips'] = Variable<String>(storageTips);
+    map['best_eat_method'] = Variable<String>(bestEatMethod);
+    map['variety_json'] = Variable<String>(varietyJson);
+    map['grade_std'] = Variable<String>(gradeStd);
     return map;
   }
 
@@ -989,6 +1136,11 @@ class Fruit extends DataClass implements Insertable<Fruit> {
       benefitsJson: Value(benefitsJson),
       contraindicationsJson: Value(contraindicationsJson),
       originsJson: Value(originsJson),
+      pickingTips: Value(pickingTips),
+      storageTips: Value(storageTips),
+      bestEatMethod: Value(bestEatMethod),
+      varietyJson: Value(varietyJson),
+      gradeStd: Value(gradeStd),
     );
   }
 
@@ -1017,6 +1169,11 @@ class Fruit extends DataClass implements Insertable<Fruit> {
         json['contraindicationsJson'],
       ),
       originsJson: serializer.fromJson<String>(json['originsJson']),
+      pickingTips: serializer.fromJson<String>(json['pickingTips']),
+      storageTips: serializer.fromJson<String>(json['storageTips']),
+      bestEatMethod: serializer.fromJson<String>(json['bestEatMethod']),
+      varietyJson: serializer.fromJson<String>(json['varietyJson']),
+      gradeStd: serializer.fromJson<String>(json['gradeStd']),
     );
   }
   @override
@@ -1040,6 +1197,11 @@ class Fruit extends DataClass implements Insertable<Fruit> {
       'benefitsJson': serializer.toJson<String>(benefitsJson),
       'contraindicationsJson': serializer.toJson<String>(contraindicationsJson),
       'originsJson': serializer.toJson<String>(originsJson),
+      'pickingTips': serializer.toJson<String>(pickingTips),
+      'storageTips': serializer.toJson<String>(storageTips),
+      'bestEatMethod': serializer.toJson<String>(bestEatMethod),
+      'varietyJson': serializer.toJson<String>(varietyJson),
+      'gradeStd': serializer.toJson<String>(gradeStd),
     };
   }
 
@@ -1061,6 +1223,11 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     String? benefitsJson,
     String? contraindicationsJson,
     String? originsJson,
+    String? pickingTips,
+    String? storageTips,
+    String? bestEatMethod,
+    String? varietyJson,
+    String? gradeStd,
   }) => Fruit(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -1079,6 +1246,11 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     benefitsJson: benefitsJson ?? this.benefitsJson,
     contraindicationsJson: contraindicationsJson ?? this.contraindicationsJson,
     originsJson: originsJson ?? this.originsJson,
+    pickingTips: pickingTips ?? this.pickingTips,
+    storageTips: storageTips ?? this.storageTips,
+    bestEatMethod: bestEatMethod ?? this.bestEatMethod,
+    varietyJson: varietyJson ?? this.varietyJson,
+    gradeStd: gradeStd ?? this.gradeStd,
   );
   Fruit copyWithCompanion(FruitsCompanion data) {
     return Fruit(
@@ -1115,6 +1287,19 @@ class Fruit extends DataClass implements Insertable<Fruit> {
       originsJson: data.originsJson.present
           ? data.originsJson.value
           : this.originsJson,
+      pickingTips: data.pickingTips.present
+          ? data.pickingTips.value
+          : this.pickingTips,
+      storageTips: data.storageTips.present
+          ? data.storageTips.value
+          : this.storageTips,
+      bestEatMethod: data.bestEatMethod.present
+          ? data.bestEatMethod.value
+          : this.bestEatMethod,
+      varietyJson: data.varietyJson.present
+          ? data.varietyJson.value
+          : this.varietyJson,
+      gradeStd: data.gradeStd.present ? data.gradeStd.value : this.gradeStd,
     );
   }
 
@@ -1137,13 +1322,18 @@ class Fruit extends DataClass implements Insertable<Fruit> {
           ..write('mineralsJson: $mineralsJson, ')
           ..write('benefitsJson: $benefitsJson, ')
           ..write('contraindicationsJson: $contraindicationsJson, ')
-          ..write('originsJson: $originsJson')
+          ..write('originsJson: $originsJson, ')
+          ..write('pickingTips: $pickingTips, ')
+          ..write('storageTips: $storageTips, ')
+          ..write('bestEatMethod: $bestEatMethod, ')
+          ..write('varietyJson: $varietyJson, ')
+          ..write('gradeStd: $gradeStd')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     id,
     name,
     englishName,
@@ -1161,7 +1351,12 @@ class Fruit extends DataClass implements Insertable<Fruit> {
     benefitsJson,
     contraindicationsJson,
     originsJson,
-  );
+    pickingTips,
+    storageTips,
+    bestEatMethod,
+    varietyJson,
+    gradeStd,
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1182,7 +1377,12 @@ class Fruit extends DataClass implements Insertable<Fruit> {
           other.mineralsJson == this.mineralsJson &&
           other.benefitsJson == this.benefitsJson &&
           other.contraindicationsJson == this.contraindicationsJson &&
-          other.originsJson == this.originsJson);
+          other.originsJson == this.originsJson &&
+          other.pickingTips == this.pickingTips &&
+          other.storageTips == this.storageTips &&
+          other.bestEatMethod == this.bestEatMethod &&
+          other.varietyJson == this.varietyJson &&
+          other.gradeStd == this.gradeStd);
 }
 
 class FruitsCompanion extends UpdateCompanion<Fruit> {
@@ -1203,6 +1403,11 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
   final Value<String> benefitsJson;
   final Value<String> contraindicationsJson;
   final Value<String> originsJson;
+  final Value<String> pickingTips;
+  final Value<String> storageTips;
+  final Value<String> bestEatMethod;
+  final Value<String> varietyJson;
+  final Value<String> gradeStd;
   final Value<int> rowid;
   const FruitsCompanion({
     this.id = const Value.absent(),
@@ -1222,6 +1427,11 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     this.benefitsJson = const Value.absent(),
     this.contraindicationsJson = const Value.absent(),
     this.originsJson = const Value.absent(),
+    this.pickingTips = const Value.absent(),
+    this.storageTips = const Value.absent(),
+    this.bestEatMethod = const Value.absent(),
+    this.varietyJson = const Value.absent(),
+    this.gradeStd = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   FruitsCompanion.insert({
@@ -1242,6 +1452,11 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     required String benefitsJson,
     required String contraindicationsJson,
     required String originsJson,
+    required String pickingTips,
+    required String storageTips,
+    required String bestEatMethod,
+    required String varietyJson,
+    required String gradeStd,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
@@ -1258,7 +1473,12 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
        mineralsJson = Value(mineralsJson),
        benefitsJson = Value(benefitsJson),
        contraindicationsJson = Value(contraindicationsJson),
-       originsJson = Value(originsJson);
+       originsJson = Value(originsJson),
+       pickingTips = Value(pickingTips),
+       storageTips = Value(storageTips),
+       bestEatMethod = Value(bestEatMethod),
+       varietyJson = Value(varietyJson),
+       gradeStd = Value(gradeStd);
   static Insertable<Fruit> custom({
     Expression<String>? id,
     Expression<String>? name,
@@ -1277,6 +1497,11 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     Expression<String>? benefitsJson,
     Expression<String>? contraindicationsJson,
     Expression<String>? originsJson,
+    Expression<String>? pickingTips,
+    Expression<String>? storageTips,
+    Expression<String>? bestEatMethod,
+    Expression<String>? varietyJson,
+    Expression<String>? gradeStd,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1299,6 +1524,11 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
       if (contraindicationsJson != null)
         'contraindications_json': contraindicationsJson,
       if (originsJson != null) 'origins_json': originsJson,
+      if (pickingTips != null) 'picking_tips': pickingTips,
+      if (storageTips != null) 'storage_tips': storageTips,
+      if (bestEatMethod != null) 'best_eat_method': bestEatMethod,
+      if (varietyJson != null) 'variety_json': varietyJson,
+      if (gradeStd != null) 'grade_std': gradeStd,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1321,6 +1551,11 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     Value<String>? benefitsJson,
     Value<String>? contraindicationsJson,
     Value<String>? originsJson,
+    Value<String>? pickingTips,
+    Value<String>? storageTips,
+    Value<String>? bestEatMethod,
+    Value<String>? varietyJson,
+    Value<String>? gradeStd,
     Value<int>? rowid,
   }) {
     return FruitsCompanion(
@@ -1342,6 +1577,11 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
       contraindicationsJson:
           contraindicationsJson ?? this.contraindicationsJson,
       originsJson: originsJson ?? this.originsJson,
+      pickingTips: pickingTips ?? this.pickingTips,
+      storageTips: storageTips ?? this.storageTips,
+      bestEatMethod: bestEatMethod ?? this.bestEatMethod,
+      varietyJson: varietyJson ?? this.varietyJson,
+      gradeStd: gradeStd ?? this.gradeStd,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1402,6 +1642,21 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
     if (originsJson.present) {
       map['origins_json'] = Variable<String>(originsJson.value);
     }
+    if (pickingTips.present) {
+      map['picking_tips'] = Variable<String>(pickingTips.value);
+    }
+    if (storageTips.present) {
+      map['storage_tips'] = Variable<String>(storageTips.value);
+    }
+    if (bestEatMethod.present) {
+      map['best_eat_method'] = Variable<String>(bestEatMethod.value);
+    }
+    if (varietyJson.present) {
+      map['variety_json'] = Variable<String>(varietyJson.value);
+    }
+    if (gradeStd.present) {
+      map['grade_std'] = Variable<String>(gradeStd.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1428,6 +1683,11 @@ class FruitsCompanion extends UpdateCompanion<Fruit> {
           ..write('benefitsJson: $benefitsJson, ')
           ..write('contraindicationsJson: $contraindicationsJson, ')
           ..write('originsJson: $originsJson, ')
+          ..write('pickingTips: $pickingTips, ')
+          ..write('storageTips: $storageTips, ')
+          ..write('bestEatMethod: $bestEatMethod, ')
+          ..write('varietyJson: $varietyJson, ')
+          ..write('gradeStd: $gradeStd, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3023,6 +3283,11 @@ typedef $$FruitsTableCreateCompanionBuilder =
       required String benefitsJson,
       required String contraindicationsJson,
       required String originsJson,
+      required String pickingTips,
+      required String storageTips,
+      required String bestEatMethod,
+      required String varietyJson,
+      required String gradeStd,
       Value<int> rowid,
     });
 typedef $$FruitsTableUpdateCompanionBuilder =
@@ -3044,6 +3309,11 @@ typedef $$FruitsTableUpdateCompanionBuilder =
       Value<String> benefitsJson,
       Value<String> contraindicationsJson,
       Value<String> originsJson,
+      Value<String> pickingTips,
+      Value<String> storageTips,
+      Value<String> bestEatMethod,
+      Value<String> varietyJson,
+      Value<String> gradeStd,
       Value<int> rowid,
     });
 
@@ -3138,6 +3408,31 @@ class $$FruitsTableFilterComposer
 
   ColumnFilters<String> get originsJson => $composableBuilder(
     column: $table.originsJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pickingTips => $composableBuilder(
+    column: $table.pickingTips,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get storageTips => $composableBuilder(
+    column: $table.storageTips,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get bestEatMethod => $composableBuilder(
+    column: $table.bestEatMethod,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get varietyJson => $composableBuilder(
+    column: $table.varietyJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get gradeStd => $composableBuilder(
+    column: $table.gradeStd,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -3235,6 +3530,31 @@ class $$FruitsTableOrderingComposer
     column: $table.originsJson,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get pickingTips => $composableBuilder(
+    column: $table.pickingTips,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get storageTips => $composableBuilder(
+    column: $table.storageTips,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get bestEatMethod => $composableBuilder(
+    column: $table.bestEatMethod,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get varietyJson => $composableBuilder(
+    column: $table.varietyJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get gradeStd => $composableBuilder(
+    column: $table.gradeStd,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$FruitsTableAnnotationComposer
@@ -3312,6 +3632,29 @@ class $$FruitsTableAnnotationComposer
     column: $table.originsJson,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get pickingTips => $composableBuilder(
+    column: $table.pickingTips,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get storageTips => $composableBuilder(
+    column: $table.storageTips,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get bestEatMethod => $composableBuilder(
+    column: $table.bestEatMethod,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get varietyJson => $composableBuilder(
+    column: $table.varietyJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get gradeStd =>
+      $composableBuilder(column: $table.gradeStd, builder: (column) => column);
 }
 
 class $$FruitsTableTableManager
@@ -3359,6 +3702,11 @@ class $$FruitsTableTableManager
                 Value<String> benefitsJson = const Value.absent(),
                 Value<String> contraindicationsJson = const Value.absent(),
                 Value<String> originsJson = const Value.absent(),
+                Value<String> pickingTips = const Value.absent(),
+                Value<String> storageTips = const Value.absent(),
+                Value<String> bestEatMethod = const Value.absent(),
+                Value<String> varietyJson = const Value.absent(),
+                Value<String> gradeStd = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => FruitsCompanion(
                 id: id,
@@ -3378,6 +3726,11 @@ class $$FruitsTableTableManager
                 benefitsJson: benefitsJson,
                 contraindicationsJson: contraindicationsJson,
                 originsJson: originsJson,
+                pickingTips: pickingTips,
+                storageTips: storageTips,
+                bestEatMethod: bestEatMethod,
+                varietyJson: varietyJson,
+                gradeStd: gradeStd,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -3399,6 +3752,11 @@ class $$FruitsTableTableManager
                 required String benefitsJson,
                 required String contraindicationsJson,
                 required String originsJson,
+                required String pickingTips,
+                required String storageTips,
+                required String bestEatMethod,
+                required String varietyJson,
+                required String gradeStd,
                 Value<int> rowid = const Value.absent(),
               }) => FruitsCompanion.insert(
                 id: id,
@@ -3418,6 +3776,11 @@ class $$FruitsTableTableManager
                 benefitsJson: benefitsJson,
                 contraindicationsJson: contraindicationsJson,
                 originsJson: originsJson,
+                pickingTips: pickingTips,
+                storageTips: storageTips,
+                bestEatMethod: bestEatMethod,
+                varietyJson: varietyJson,
+                gradeStd: gradeStd,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

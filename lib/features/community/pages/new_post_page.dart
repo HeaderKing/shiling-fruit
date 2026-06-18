@@ -7,7 +7,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/api/api_client.dart';
 import '../../../core/auth/auth_provider.dart';
-import '../../../data/repositories/post_repository.dart';
 
 class NewPostPage extends ConsumerStatefulWidget {
   const NewPostPage({super.key});

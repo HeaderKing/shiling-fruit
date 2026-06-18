@@ -61,7 +61,11 @@ class EncyclopediaPage extends ConsumerWidget {
     );
   }
 
-  void _openSearch(BuildContext context) => showSearch(context: context, delegate: FruitSearchDelegate());
+  void _openSearch(BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (_) => const _SearchPage(),
+  ));
+}
   void _openFruit(BuildContext context, String fruitId) => Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => FruitEncyclopediaPage(fruitId: fruitId)));
   void _openCategory(BuildContext context, String category) => Navigator.of(context).push(MaterialPageRoute(
@@ -168,14 +172,159 @@ class _FruitLetterList extends StatelessWidget {
   }
 }
 
-/// 搜索委托（Sprint 3 占位）
+/// 搜索页（使用 Riverpod 获取水果数据）
+class _SearchPage extends ConsumerStatefulWidget {
+  const _SearchPage();
+  @override
+  ConsumerState<_SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends ConsumerState<_SearchPage> {
+  final _ctrl = TextEditingController();
+  List<Fruit> _results = [];
+  bool _searched = false;
+
+  @override
+  void dispose() { _ctrl.dispose(); super.dispose(); }
+
+  void _search() {
+    final q = _ctrl.text.trim().toLowerCase();
+    if (q.isEmpty) { setState(() { _results = []; _searched = false; }); return; }
+    final fruits = ref.read(allFruitsProvider).valueOrNull ?? [];
+    setState(() {
+      _results = fruits.where((f) =>
+        f.name.toLowerCase().contains(q) ||
+        f.englishName.toLowerCase().contains(q) ||
+        f.peakSeason.toLowerCase().contains(q)
+      ).toList();
+      _searched = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Scaffold(
+      appBar: AppBar(
+        title: TextField(
+          controller: _ctrl,
+          autofocus: true,
+          decoration: const InputDecoration(hintText: '搜索水果…', border: InputBorder.none),
+          textInputAction: TextInputAction.search,
+          onSubmitted: (_) => _search(),
+        ),
+        actions: [
+          IconButton(icon: const Icon(Icons.search_rounded), onPressed: _search),
+        ],
+      ),
+      body: _buildBody(scheme),
+    );
+  }
+
+  Widget _buildBody(ColorScheme scheme) {
+    if (!_searched) {
+      return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+        const Text('🔍', style: TextStyle(fontSize: 48)),
+        const SizedBox(height: 8),
+        Text('输入水果名称搜索', style: TextStyle(color: scheme.onSurfaceVariant)),
+      ]));
+    }
+
+    if (_results.isEmpty) {
+      return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+        const Text('😕', style: TextStyle(fontSize: 48)),
+        const SizedBox(height: 8),
+        Text('没有找到"${_ctrl.text}"', style: TextStyle(color: scheme.onSurfaceVariant)),
+      ]));
+    }
+
+    return ListView.separated(
+      itemCount: _results.length,
+      separatorBuilder: (_, __) => const Divider(height: 1),
+      itemBuilder: (_, i) => _FruitSearchTile(fruit: _results[i]),
+    );
+  }
+}
+
+/// 水果搜索委托（已废弃，改用 _SearchPage）
 class FruitSearchDelegate extends SearchDelegate<String?> {
+  FruitSearchDelegate(this._fruits);
+  final List<Fruit> _fruits;
+
   @override
-  List<Widget>? buildActions(BuildContext context) => [IconButton(icon: const Icon(Icons.clear), onPressed: () => query = '')];
+  List<Widget>? buildActions(BuildContext context) => [
+    if (query.isNotEmpty)
+      IconButton(icon: const Icon(Icons.clear), onPressed: () => query = ''),
+  ];
+
   @override
-  Widget? buildLeading(BuildContext context) => IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => close(context, null));
+  Widget? buildLeading(BuildContext context) =>
+      IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => close(context, null));
+
   @override
-  Widget buildResults(BuildContext context) => const Center(child: Text('搜索结果'));
+  Widget buildResults(BuildContext context) => _buildSearchList(context);
+
   @override
-  Widget buildSuggestions(BuildContext context) => const Center(child: Text('输入水果名称搜索'));
+  Widget buildSuggestions(BuildContext context) => _buildSearchList(context);
+
+  Widget _buildSearchList(BuildContext context) {
+    if (query.isEmpty) {
+      return Center(
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          const Text('🔍', style: TextStyle(fontSize: 48)),
+          const SizedBox(height: 8),
+          Text('输入水果名称、品种或产地',
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+        ]),
+      );
+    }
+
+    final q = query.toLowerCase();
+    final results = _fruits.where((f) =>
+      f.name.toLowerCase().contains(q) ||
+      f.englishName.toLowerCase().contains(q) ||
+      f.peakSeason.toLowerCase().contains(q) ||
+      f.id.contains(q)
+    ).toList();
+
+    if (results.isEmpty) {
+      return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+        const Text('😕', style: TextStyle(fontSize: 48)),
+        const SizedBox(height: 8),
+        Text('没有找到 "$query"', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+      ]));
+    }
+
+    return ListView.separated(
+      itemCount: results.length,
+      separatorBuilder: (_, __) => const Divider(height: 1),
+      itemBuilder: (_, i) => _FruitSearchTile(fruit: results[i]),
+    );
+  }
+}
+
+class _FruitSearchTile extends StatelessWidget {
+  const _FruitSearchTile({required this.fruit});
+  final Fruit fruit;
+
+  @override
+  Widget build(BuildContext context) {
+    final bgColor = Color(int.parse(fruit.colorHex.replaceAll('#', 'FF'), radix: 16)).withValues(alpha: 0.2);
+    return ListTile(
+      leading: Container(
+        width: 40, height: 40,
+        decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(10)),
+        alignment: Alignment.center,
+        child: Text(fruit.emoji.isNotEmpty ? fruit.emoji : fruit.name[0], style: const TextStyle(fontSize: 20)),
+      ),
+      title: Text(fruit.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+      subtitle: Text(fruit.peakSeason, maxLines: 1, overflow: TextOverflow.ellipsis),
+      trailing: const Icon(Icons.chevron_right, size: 18),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => FruitEncyclopediaPage(fruitId: fruit.id),
+        ));
+      },
+    );
+  }
 }

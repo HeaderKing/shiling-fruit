@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/database.dart';
-import '../../../presentation/providers.dart';
+import '../../../core/providers/app_providers.dart';
 import '../../../shared/widgets/error_view.dart';
 import '../../../shared/widgets/loading_overlay.dart';
 import '../../home/widgets/fruit_thumb.dart';

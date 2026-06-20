@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../presentation/providers.dart';
+import '../../../core/providers/app_providers.dart';
 import '../providers/home_providers.dart';
 
 class FruitDetailPage extends ConsumerStatefulWidget {

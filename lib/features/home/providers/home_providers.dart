@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/database.dart';
-import '../../../presentation/providers.dart';
+import '../../../core/providers/app_providers.dart';
 
 /// 月度推荐（用于 calendar_page）
 final monthRecommendationsProvider =

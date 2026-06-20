@@ -11,12 +11,17 @@ class NotificationService {
 
   Future<void> init() async {
     if (_initialized) return;
-    tz.initializeTimeZones();
-    const init = InitializationSettings(
-      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-    );
-    await _plugin.initialize(init);
-    _initialized = true;
+    // Web 不支持本地通知，静默跳过
+    try {
+      tz.initializeTimeZones();
+      const init = InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+      );
+      await _plugin.initialize(init);
+      _initialized = true;
+    } catch (_) {
+      _initialized = true;
+    }
   }
 
   Future<void> requestPermission() async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../presentation/providers.dart';
+import '../../../core/providers/app_providers.dart';
 import '../../../data/database.dart';
 import '../../home/widgets/fruit_thumb.dart';
 import 'fruit_encyclopedia_page.dart';

@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'database_conn.dart' as conn;
+
 
 part 'database.g.dart';
 
@@ -101,7 +99,7 @@ class Prices extends Table {
 
 @DriftDatabase(tables: [Cities, Fruits, Recommendations, Favorites, UserPrefs, Prices])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+  AppDatabase() : super(conn.openDbConnection());
 
   @override
   int get schemaVersion => 3;
@@ -216,12 +214,4 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<void> clearPrices() => delete(prices).go();
-}
-
-LazyDatabase _openConnection() {
-  return LazyDatabase(() async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dir.path, 'shiling_fruit.sqlite'));
-    return NativeDatabase.createInBackground(file);
-  });
 }

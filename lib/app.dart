@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/auth/auth_provider.dart';
 import 'core/auth/auth_state.dart' as app;
+import 'core/navigation/main_shell.dart';
+import 'core/providers/app_providers.dart';
 import 'features/auth/pages/login_page.dart';
-import 'presentation/pages/main_shell.dart';
-import 'presentation/providers.dart';
-import 'presentation/theme/app_theme.dart';
+import 'shared/theme/app_theme.dart';
 
 class ShilingFruitApp extends ConsumerWidget {
   const ShilingFruitApp({super.key});

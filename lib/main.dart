@@ -6,7 +6,7 @@ import 'app.dart';
 import 'core/config/env.dart';
 import 'data/database.dart';
 import 'data/seed_loader.dart';
-import 'presentation/providers.dart';
+import 'core/providers/app_providers.dart';
 import 'services/data_updater.dart';
 import 'services/location_service.dart';
 import 'services/notification_service.dart';
@@ -20,7 +20,7 @@ Future<void> main() async {
     publishableKey: Env.supabaseAnonKey,
   );
 
-  // 初始化离线数据库（原有逻辑保留）
+  // 初始化离线数据库
   final db = AppDatabase();
   final updater = DataUpdater();
   await updater.ensureLocalCopy();

@@ -183,6 +183,7 @@ class _SearchPageState extends ConsumerState<_SearchPage> {
   final _ctrl = TextEditingController();
   List<Fruit> _results = [];
   bool _searched = false;
+  final List<String> _history = ['草莓', '芒果', '西瓜']; // TODO: 从 SharedPreferences 加载
 
   @override
   void dispose() { _ctrl.dispose(); super.dispose(); }
@@ -191,12 +192,46 @@ class _SearchPageState extends ConsumerState<_SearchPage> {
     final q = _ctrl.text.trim().toLowerCase();
     if (q.isEmpty) { setState(() { _results = []; _searched = false; }); return; }
     final fruits = ref.read(allFruitsProvider).valueOrNull ?? [];
+
+    // 保存到搜索历史
+    if (!_history.contains(q) && q.length > 1) {
+      setState(() {
+        _history.insert(0, q);
+        if (_history.length > 10) _history.removeLast();
+      });
+    }
+
     setState(() {
-      _results = fruits.where((f) =>
-        f.name.toLowerCase().contains(q) ||
-        f.englishName.toLowerCase().contains(q) ||
-        f.peakSeason.toLowerCase().contains(q)
-      ).toList();
+      _results = fruits.where((f) {
+        // 基础字段搜索
+        if (f.name.toLowerCase().contains(q)) return true;
+        if (f.englishName.toLowerCase().contains(q)) return true;
+        if (f.peakSeason.toLowerCase().contains(q)) return true;
+
+        // 搜索产地 (originsJson)
+        if (f.originsJson.toLowerCase().contains(q)) return true;
+
+        // 搜索别名 (aliasJson)
+        if (f.aliasJson.toLowerCase().contains(q)) return true;
+
+        return false;
+      }).toList();
+
+      // 排序: 名称完全匹配 > 名称前缀匹配 > 其他匹配
+      _results.sort((a, b) {
+        final aExact = a.name.toLowerCase() == q;
+        final bExact = b.name.toLowerCase() == q;
+        if (aExact && !bExact) return -1;
+        if (!aExact && bExact) return 1;
+
+        final aStarts = a.name.toLowerCase().startsWith(q);
+        final bStarts = b.name.toLowerCase().startsWith(q);
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
+
+        return a.name.compareTo(b.name);
+      });
+
       _searched = true;
     });
   }
@@ -223,11 +258,44 @@ class _SearchPageState extends ConsumerState<_SearchPage> {
 
   Widget _buildBody(ColorScheme scheme) {
     if (!_searched) {
-      return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-        const Text('🔍', style: TextStyle(fontSize: 48)),
+      return ListView(padding: const EdgeInsets.all(16), children: [
+        // 搜索历史
+        if (_history.isNotEmpty) ...[
+          Row(children: [
+            const Text('搜索历史', style: TextStyle(fontWeight: FontWeight.w600)),
+            const Spacer(),
+            TextButton(
+              onPressed: () => setState(() => _history.clear()),
+              child: const Text('清空', style: TextStyle(fontSize: 12)),
+            ),
+          ]),
+          const SizedBox(height: 8),
+          Wrap(spacing: 8, runSpacing: 8, children: _history.map((keyword) =>
+            ActionChip(
+              label: Text(keyword),
+              onPressed: () {
+                _ctrl.text = keyword;
+                _search();
+              },
+            ),
+          ).toList()),
+          const SizedBox(height: 24),
+        ],
+
+        // 热门搜索
+        const Text('热门搜索', style: TextStyle(fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
-        Text('输入水果名称搜索', style: TextStyle(color: scheme.onSurfaceVariant)),
-      ]));
+        Wrap(spacing: 8, runSpacing: 8, children: ['🔥 西瓜', '🔥 榴莲', '🔥 车厘子', '🔥 山竹', '🔥 荔枝'].map((keyword) =>
+          ActionChip(
+            avatar: const Text('🔥', style: TextStyle(fontSize: 12)),
+            label: Text(keyword.replaceAll('🔥 ', '')),
+            onPressed: () {
+              _ctrl.text = keyword.replaceAll('🔥 ', '');
+              _search();
+            },
+          ),
+        ).toList()),
+      ]);
     }
 
     if (_results.isEmpty) {
@@ -318,7 +386,7 @@ class _FruitSearchTile extends StatelessWidget {
         child: Text(fruit.emoji.isNotEmpty ? fruit.emoji : fruit.name[0], style: const TextStyle(fontSize: 20)),
       ),
       title: Text(fruit.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-      subtitle: Text(fruit.peakSeason, maxLines: 1, overflow: TextOverflow.ellipsis),
+      subtitle: Text('${fruit.englishName} · ${fruit.peakSeason}', maxLines: 1, overflow: TextOverflow.ellipsis),
       trailing: const Icon(Icons.chevron_right, size: 18),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(

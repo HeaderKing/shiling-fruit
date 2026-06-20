@@ -5,6 +5,7 @@ import '../../../core/providers/app_providers.dart';
 import '../../../data/database.dart';
 import '../../home/widgets/fruit_thumb.dart';
 import 'fruit_encyclopedia_page.dart';
+import 'seasonal_map_page.dart';
 
 class EncyclopediaPage extends ConsumerWidget {
   const EncyclopediaPage({super.key});
@@ -27,6 +28,65 @@ class EncyclopediaPage extends ConsumerWidget {
       body: ListView(padding: const EdgeInsets.all(16), children: [
         _SearchBar(onTap: () => _openSearch(context)),
         const SizedBox(height: 20),
+
+        // 时令地图入口卡片
+        Card(
+          child: InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SeasonalMapPage()),
+            ),
+            borderRadius: BorderRadius.circular(16),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      Icons.map_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 28,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '🗺️ $month 月时令地图',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '查看全国各地当季水果分布',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+
         Text('🌿 $month 月时令热点', style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 12),
         fruitsAsync.when(
